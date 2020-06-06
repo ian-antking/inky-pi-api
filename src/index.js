@@ -1,8 +1,12 @@
+
+require('dotenv').config()
 const mqtt = require('mqtt');
 
 const args = process.argv.slice(2)
 
-const client = mqtt.connect('mqtt://192.168.1.101')
+const { MQTT_BROKER, MQTT_TOPIC } = process.env;
+
+const client = mqtt.connect(MQTT_BROKER)
 
 const message = {
     text: args[0],
@@ -11,6 +15,6 @@ const message = {
 }
 
 client.on('connect', () => {
-    client.publish('test/message', JSON.stringify(message))
+    client.publish(MQTT_TOPIC, JSON.stringify(message))
     client.end()
 })
